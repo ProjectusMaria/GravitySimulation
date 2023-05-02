@@ -1,0 +1,41 @@
+:host {
+    height: 100%;
+    display: flex;    
+    flex-direction: column;
+}
+h1 {
+    font-size: 45px;
+  }
+#title {
+    display: flex;    
+    justify-content: center;
+    padding-top: 30px;
+}
+#aboutMyself {
+    padding-left: 70px;
+    padding-right: 70px;
+
+    justify-content: center;
+    text-align: justify;
+    p {
+        text-indent: 2em;
+        &::first-letter {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-weight: bold;
+            font-size: 20px;
+            color: darkblue;
+        }
+    }   
+    img {
+        margin: 1em 0; 
+        border-radius: 13px;
+    }   
+}
+#links-box {
+    display: flex;
+    justify-content: center;
+}
+.links {
+    font-size: medium;
+    padding: 10px;
+}

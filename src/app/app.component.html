@@ -1,0 +1,161 @@
+<mat-toolbar color="primary">
+    <span>Maria's Gravity Sim - {{mode === AppMode.SurfaceGravity ? 'Surface Gravity' : mode === AppMode.SpaceGravity ? 'Space Gravity' : 'About'}}</span>
+    <span class="spacer"></span>
+    <button mat-icon-button matTooltip="Surface View" (click)="toggleMode(AppMode.SurfaceGravity)">
+        <i class="fa-solid fa-earth-americas"></i>
+    </button>
+    <button mat-icon-button matTooltip="Space View" (click)="toggleMode(AppMode.SpaceGravity)">
+        <i class="fa-solid fa-meteor"></i> 
+    </button>
+    <button mat-icon-button matTooltip="About" (click)="toggleMode(AppMode.About)">
+        <i class="fa-regular fa-circle-question"></i> 
+    </button>
+</mat-toolbar>
+<mat-drawer-container class="content" autosize *ngIf="mode!==AppMode.About" [ngSwitch]="mode">
+    <mat-drawer #drawer class="sidenav" mode="side" [opened]="isSideNavOpen" *ngSwitchCase="AppMode.SurfaceGravity">
+        <p style="padding-top: 8px">Parameters</p>   
+        <div class="param-field">            
+            <label for="fps" matTooltip="Animation Frames Per Second">FPS <span class="label-dim">[{{fps}}]</span></label>
+            <mat-slider id="fps" showTickMarks discrete min="30" max="90" step="30" class="val">
+                <input matSliderThumb [(ngModel)]="fps" >
+            </mat-slider>
+        </div>                    
+        <div class="param-field">            
+            <label for="trail" matTooltip="Number of trailing dots following a scene object">Trail Length <span class="label-dim">[{{trail}}]</span></label>
+            <mat-slider id="trail" showTickMarks discrete min="10" max="100" step="10" class="val">
+                <input matSliderThumb [ngModel]="trail" (ngModelChange)="onTrailLengthChanged($event)">
+            </mat-slider>
+        </div>   
+        <div class="param-field">            
+            <label for="num_of_balls" matTooltip="Number of ball for simulation"># Balls <span class="label-dim">[{{num_of_balls}}]</span></label>
+            <mat-slider id="num_of_balls" showTickMarks discrete min="1" max="10" step="1" class="val">
+                <input matSliderThumb [(ngModel)]="num_of_balls">
+            </mat-slider>
+        </div>
+        <div class="param-field">            
+            <label for="gravity" matTooltip="Gravity strength">Gravity <span class="label-dim">[{{gravity}}]</span></label>
+            <mat-slider id="gravity" showTickMarks discrete min="0" max="0.5" step="0.05" class="val">
+                <input matSliderThumb [ngModel]="gravity" (ngModelChange)="onGravityChanged($event)">
+            </mat-slider>
+        </div>      
+        <div class="param-field">            
+            <label for="elasticity" matTooltip="Energy preseved after bouncing of the ground">Elasticity <span class="label-dim">[{{elasticity}}]</span></label>
+            <mat-slider id="elasticity" showTickMarks discrete min="0" max="1" step="0.1" class="val">
+                <input matSliderThumb [ngModel]="elasticity" (ngModelChange)="onElasticityChanged($event)">
+            </mat-slider>
+        </div> 
+        <div class="param-field">            
+            <label for="friction" matTooltip="Horizontal friction force strength">Friction <span class="label-dim">[{{friction}}]</span></label>
+            <mat-slider id="friction" showTickMarks discrete min="0" max="0.06" step="0.02" class="val">
+                <input matSliderThumb [ngModel]="friction" (ngModelChange)="onFrictionChanged($event)">
+            </mat-slider>
+        </div> 
+    </mat-drawer>
+
+    <mat-drawer #drawer class="sidenav" mode="side" [opened]="isSideNavOpen" *ngSwitchCase="AppMode.SpaceGravity">
+        <p style="padding-top: 8px">Parameters</p>   
+        <div class="param-field">            
+            <label for="fps">FPS <span class="label-dim">[{{fps}}]</span></label>
+            <mat-slider id="fps" showTickMarks discrete min="30" max="90" step="30" class="val">
+                <input matSliderThumb [(ngModel)]="fps" >
+            </mat-slider>
+        </div>        
+        <div class="param-field">            
+            <label for="mass">Sun Mass <span class="label-dim">[{{mass}}]</span></label>
+            <mat-slider id="mass" showTickMarks discrete min="1" max="10" step="1" class="val">
+                <input matSliderThumb [ngModel]="mass" (ngModelChange)="onSunMassChanged($event)" >
+            </mat-slider>
+        </div>
+        <div class="param-field">            
+            <label for="ball_mass">Planet Mass <span class="label-dim">[{{ball_mass}}]</span></label>
+            <mat-slider id="ball_mass" showTickMarks discrete min="1" max="10" step="1" class="val">
+                <input matSliderThumb [ngModel]="ball_mass" (ngModelChange)="onBallMassChanged($event)" >
+            </mat-slider>
+        </div>           
+        <div class="param-field">            
+            <label for="trail">Trail Length <span class="label-dim">[{{pad_label(trail+'', 3)}}]</span></label>
+            <mat-slider id="trail" showTickMarks discrete min="10" max="500" step="10" class="val">
+                <input matSliderThumb [ngModel]="trail" (ngModelChange)="onTrailLengthChanged($event)">
+            </mat-slider>
+        </div>   
+        <div class="param-field">            
+            <label for="num_of_balls"># Balls <span class="label-dim">[{{num_of_balls}}]</span></label>
+            <mat-slider id="num_of_balls" showTickMarks discrete min="0" max="25" step="1" class="val">
+                <input matSliderThumb [(ngModel)]="num_of_balls">
+            </mat-slider>
+        </div>
+        <div class="param-field">            
+            <label for="gravity">Gravity <span class="label-dim">[{{gravity}}]</span></label>
+            <mat-slider id="gravity" showTickMarks discrete min="0" max="1" step="0.1" class="val">
+                <input matSliderThumb [ngModel]="gravity" (ngModelChange)="onGravityChanged($event)">
+            </mat-slider>
+        </div>    
+        <div class="param-field checkbox">            
+            <label for="lockSun" matTooltip="Lock Sun in the center">Lock Sun</label>
+            <mat-slide-toggle [(ngModel)]="lockSun"></mat-slide-toggle>
+        </div>    
+        <div class="param-field checkbox">            
+            <label for="showVelocityVector" matTooltip="Show velocity vector">Show Velocity Vectors</label>
+            <mat-slide-toggle [ngModel]="showVelocityVector" (ngModelChange)="onShowVelocityVectorChanged($event)"></mat-slide-toggle>
+        </div>
+        <div class="param-field checkbox">            
+            <label for="showAccelerationVector" matTooltip="Show acceleration vector">Show Acceleration Vectors</label>
+            <mat-slide-toggle [ngModel]="showAccelerationVector" (ngModelChange)="onShowAccelerationVectorChanged($event)"></mat-slide-toggle>
+        </div>
+    </mat-drawer>
+
+    <div class="sidenav-content" (resized)="resize()">
+        <canvas #stage id="stage"></canvas>        
+    </div>
+
+</mat-drawer-container>
+<div class="footer" *ngIf="mode!==AppMode.About;else elseBlock;">
+    <label style="padding-right: 1em; color: white">Sounds</label>
+    <mat-slide-toggle [ngModel]="playSound" (ngModelChange)="togglePlaySound($event)" [title]="playSound?'Mute sounds':'Play sounds'" style="margin-right: 2em"></mat-slide-toggle>
+    <button mat-raised-button color="primary" class="footer-button" [disabled]="symState!==SymState.Stopped" (click)="start()">
+        Start Simulator
+    </button>
+    <button mat-raised-button color="primary" class="footer-button" *ngIf="symState===SymState.Playing" (click)="pause()">
+        Pause Simulator
+     </button>
+     <button mat-raised-button color="primary" class="footer-button" *ngIf="symState===SymState.Paused" (click)="resume()">
+        Resume Simulator
+     </button>
+    <button mat-raised-button color="primary" class="footer-button" [disabled]="symState===SymState.Stopped" (click)="stop()">
+        Stop Simulator
+     </button>
+    <mat-slide-toggle [(ngModel)]="isSideNavOpen" [title]="isSideNavOpen?'Toggle to close Side Panel':'Toggle to open Side Panel'"></mat-slide-toggle>    
+</div>
+<ng-template #elseBlock>
+    <div id="title">
+        <h1>About This Project</h1>
+    </div>
+    <div id="aboutMyself">
+        <div style="text-align: center; width: 100%"><img src="assets/galaxy.jpg"/></div>
+        <p>This research project aims to study key concepts of computational physics by creating a simulation of gravity, with a focus on its implementation and design of the simulation itself. The project involves building up a solid knowledge of physics and differential equations that are required for accurate simulations and exploring the limits of simulations compared to real-life experimentation. It takes the concepts of physics and programming and demonstrates their intersection, showing how physics simulations are important for scientists to better visualize and understand the world around us. By making a fun yet educational web application that can be used by a variety of people, I want to emphasize the importance of a well-designed user interface in creating a positive user experience. My ultimate goal is to demonstrate my expertise and capabilities in creating a complex program through this project.</p>        
+    </div>
+    <div id="links-box">
+        <div>
+            <a href="https://github.com/NovaOrion/gravity-sim.git" target="_blank" class="links">Link to Code on GitHub</a>
+        </div>
+        <div>
+            <a href="/src/SeniorThesisDraft.pdf" download class="links">Download PDF</a>
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 2em">
+        <div style="display: block; font-weight: bold" >Let's start</div>
+        <div style="margin-top: 1em;">
+            <button (click)="toggleMode(AppMode.SurfaceGravity)" style="margin-right: 1em">Surface Graviry Sym</button>
+            <button (click)="toggleMode(AppMode.SpaceGravity)">Space Gravity Sym</button>
+        </div>        
+    </div>
+</ng-template>
+<audio id="hit1">
+    <source src="assets/hit1.mp3" type="audio/mpeg" />
+</audio>
+<audio id="hit2">
+    <source src="assets/hit2.mp3" type="audio/mpeg" />
+</audio>
+<audio id="hit3">
+    <source src="assets/hit3.mp3" type="audio/mpeg" />
+</audio>
