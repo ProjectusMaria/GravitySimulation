@@ -1,6 +1,7 @@
 # Maria Kuprikova Senior Project
  - This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.3. You will need to install Angular on your machine as well as Node.js and Yarn. 
  - Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+ - Run `npm start` to run the program. 
 
 ## Description
 
